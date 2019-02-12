@@ -27,8 +27,8 @@ def send_message(message):
     r = requests.get(url + fio)
     with open('answer.json', 'w', encoding='utf8') as f:
         json.dump(r.json(), f, indent=2, ensure_ascii=False)
-    with open('answer.json', 'r', encoding='utf-8') as f:  # открываем файл на чтение
-        data = json.load(f)  # загружаем из файла данные в словарь data
+    with open('answer.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
         count = data['count']
         if count == 0:
             bot.send_message(message.chat.id, 'Данный гражданин не найден')
@@ -39,7 +39,6 @@ def send_message(message):
             position = data['results'][0]['sections'][0]['position']
             if position == '':
                 position = data['results'][1]['sections'][0]['position']
-                print(position)
 
                 yaer = data['results'][1]['sections'][0]['sections'][0]['main']['year']
                 income = data['results'][1]['sections'][0]['sections'][0]['incomes'][0]['size']
@@ -47,8 +46,13 @@ def send_message(message):
 
 
                 bot.send_message(message.chat.id, 'Данные за '+ str(yaer)+ ' год, должность: ' + str(position)+ ', доход составил: ' +str(income)+ ' ₽')
-                # bot.send_message(message.chat.id, 'Должность: '+ str(position))
-                # bot.send_message(message.chat.id, 'Доход: '+ str(income))
+                try:
+                    wife = data['results'][1]['sections'][0]['sections'][0]['incomes'][1]['size']
+                    bot.send_message(message.chat.id, 'Доход супруги: ' + str(wife)+ ' ₽')
+                except Exception as ex:
+                    print('Нет супргуги')
+
+
             else:
                 yaer = data['results'][0]['sections'][0]['sections'][0]['main']['year']
                 income = data['results'][0]['sections'][0]['sections'][0]['incomes'][0]['size']
@@ -56,9 +60,12 @@ def send_message(message):
 
                 bot.send_message(message.chat.id, 'Данные за ' + str(yaer) + ' год, должность: ' + str(
                     position) + ', доход составил: ' + str(income) + ' ₽')
-                # bot.send_message(message.chat.id, 'Данные за ' + str(yaer))
-                # bot.send_message(message.chat.id, 'Должность: ' + str(position))
-                # bot.send_message(message.chat.id, 'Доход: ' + str(income))
+                try:
+                    wife = data['results'][0]['sections'][0]['sections'][0]['incomes'][1]['size']
+                    bot.send_message(message.chat.id, 'Доход супруги: ' + str(wife)+ ' ₽')
+                except Exception as ex:
+                    print('Нет супргуги')
+
 
 
 
