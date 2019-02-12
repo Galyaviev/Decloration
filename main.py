@@ -41,6 +41,7 @@ def convert():
         data = json.load(fh)  # загружаем из файла данные в словарь data
         count = data['count']
         if count == 0:
+
             pass
 
         position = data['results'][0]['sections'][0]['position']
@@ -48,7 +49,7 @@ def convert():
         if position == '':
             position = data['results'][1]['sections'][0]['position']
             print(position)
-    
+
 
 
 def write_json(data, filename='answer.json'):
